@@ -200,54 +200,92 @@ namespace GDH
         /// Echo an message
         /// </summary>
         /// <param name="options">The options of the command</param>
-        public static void Echo(string[] options)
+        public static void Echo(string[] optionsArray)
         {
+            List<string> options = optionsArray.ToList();
             const string messageStart = "  >> ";
-            int nbOptions = options.Length;
+            bool big = false;
+            bool small = false;
+            int nbOptions = options.Count;
             string message = String.Empty;
             string option = string.Empty;
+            Console.WriteLine(message);
 
+            // If no options are specified then we display an error
             if (nbOptions == 0)
             {
                 Displayer.DisplayError("No options specified, [ echo --help ] for more informations");
                 return;
             }
+            // We need to check --help first or it will be detected as text
+            if (options[0] == "--help")
+            {
+                Console.WriteLine("Usage: echo [OPTION]... [STRING]...");
+                Console.WriteLine("Echo the STRING(s) to standard output.");
+                Console.WriteLine();
+                Console.WriteLine("  -s        output in lowercase");
+                Console.WriteLine("  -b        output in uppercase");
+                Console.WriteLine("  --help    display this help and exit");
+                return;
+            }
+
+            // If only one option is specified then we display it
             if (nbOptions == 1)
             {
                 Console.WriteLine(messageStart + options[0]);
                 return;
             }
-            if (options[0].StartsWith('"') && options.Last().EndsWith('"'))
-            {
-                message = string.Join(" ", options);
-                message = message.Substring(1, message.Length - 2);
-                Console.WriteLine(messageStart + message);
-                return;
-            }
             message = options.Last();
 
+            // Check all options
             for (int i = 0; i < nbOptions - 1; i++)
             {
                 option = options[i];
+
+                // If the option is not followed by a value then it's false
                 if (i < nbOptions - 2 && options.ElementAt(i + 1) == null)
                 {
                     Displayer.DisplayError("Invalid command, [ echo --help ] for more informations");
                     return;
                 }
 
+                // Detect string text
+                if (options[0].StartsWith('"') && options.Last().EndsWith('"'))
+                {
+                    message = string.Join(" ", options);
+                    message = message.Substring(1, message.Length - 2);
+                    break;
+                }
+
+                // Check the option
                 switch (option)
                 {
                     case "-s":
+                        small = true;
                         message = message.ToLower();
                         break;
                     case "-b":
+                        big = true;
                         message = message.ToUpper();
                         break;
                     default:
                         Displayer.DisplayError("Unknown option: " + option);
                         return;
                 }
+
+                // Remove the option beacause we already checked it
+                options.RemoveAt(0);
             }
+
+            if (small)
+            {
+                message = message.ToLower();
+            }
+            else if (big)
+            {
+                message = message.ToUpper();
+            }
+
             Console.WriteLine(messageStart + message);
         }
     }
