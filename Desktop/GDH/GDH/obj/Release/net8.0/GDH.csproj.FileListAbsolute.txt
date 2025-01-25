@@ -41,3 +41,4 @@ C:\Users\ludov\Desktop\GDH\GDH\obj\Release\net8.0\refint\GDH.dll
 C:\Users\ludov\Desktop\GDH\GDH\obj\Release\net8.0\GDH.pdb
 C:\Users\ludov\Desktop\GDH\GDH\obj\Release\net8.0\GDH.genruntimeconfig.cache
 C:\Users\ludov\Desktop\GDH\GDH\obj\Release\net8.0\ref\GDH.dll
+C:\Users\ludov\Desktop\GDH\GDH\obj\Release\net8.0\GDH.sourcelink.json

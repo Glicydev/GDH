@@ -154,6 +154,7 @@ namespace GDH
             PrintCenteredText("logout -> Logout from the actual user.", totalLineLength);
             PrintCenteredText("userdel -> Delete an user.", totalLineLength);
             PrintCenteredText("userlist -> Get the list of all the users", totalLineLength);
+            PrintCenteredText("changepw -> Change the password of an user.", totalLineLength);
 
             Console.WriteLine(bigSpace + "|".PadRight(totalLineLength - 1, '-') + "|");
         }
