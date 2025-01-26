@@ -85,7 +85,7 @@ namespace GDH
         {
             GDH.FColor(GDH.ConfirmColor);
             Console.WriteLine();
-            Console.WriteLine("> " + message);
+            Console.WriteLine(bigSpace + "> " + message);
             Console.WriteLine();
             Console.ResetColor();
         }
