@@ -64,6 +64,7 @@ namespace GDH
         {
             string error = String.Empty;
             string userPassword = SQLiteConnection.GetPasswd(username);
+            bool rightPassword = false;
 
             if (username == null)
             {
@@ -77,19 +78,28 @@ namespace GDH
             {
                 error = "User does not exist";
             }
-            else if (!askExistingPassword(username))
-            {
-                error = "Too many tries";
-            }
             else
             {
-                SQLiteConnection.DeleteUser(username);
-                Displayer.displayConfirmation(username + "'s account has been succefully deleted !");
-            }
+                if (GDH.getPermissions() >= 2)
+                    rightPassword = true;
 
-            if (error != String.Empty)
-            {
-                Displayer.DisplayError(error);
+                else
+                    rightPassword = GDH.askExistingPassword(username);
+
+                if (!rightPassword)
+                {
+                    error = "Too many tries";
+                }
+
+                if (error != String.Empty)
+                {
+                    Displayer.DisplayError(error);
+                }
+                else
+                {
+                    SQLiteConnection.DeleteUser(username);
+                    Displayer.displayConfirmation(username + "'s account has been succefully deleted !");
+                }
             }
         }
 

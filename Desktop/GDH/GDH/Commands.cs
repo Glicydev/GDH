@@ -103,7 +103,14 @@ namespace GDH
             }
             else
             {
-                rightPassword = GDH.askExistingPassword(username);
+                if (GDH.getPermissions() >= 2)
+                {
+                    rightPassword = true;
+                }
+                else
+                {
+                    rightPassword = GDH.askExistingPassword(username);
+                }
 
                 if (!rightPassword)
                     return;
