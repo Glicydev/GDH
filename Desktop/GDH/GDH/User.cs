@@ -97,6 +97,11 @@ namespace GDH
         /// <param name="newPassword"></param>
         public static void ChangePassword(string username, string newPassword)
         {
+            if (string.IsNullOrWhiteSpace(newPassword))
+            {
+                newPassword = "gdh";
+            }
+
             using (SQLiteCommand command = new SQLiteCommand("UPDATE users SET password = @newPassword WHERE userName = @username", SQLiteConnection.Connection))
             {
                 command.Parameters.AddWithValue("@newPassword", newPassword);

@@ -29,6 +29,7 @@ namespace GDH
         /// </summary>
         private static void Start()
         {
+            Console.Clear();
             FColor(StyleColor);
             string command = String.Empty;
             string[] commandWithParams;
@@ -83,6 +84,7 @@ namespace GDH
             else
             {
                 SQLiteConnection.DeleteUser(username);
+                Displayer.displayConfirmation(username + "'s account has been succefully deleted !");
             }
 
             if (error != String.Empty)
@@ -131,50 +133,62 @@ namespace GDH
         {
             SQLiteConnection.Start();
 
-            #if (DEBUG)
+#if (DEBUG)
                 User = new User("root", "gdh");
 
-            #elif (RELEASE)
-                Console.Write("Please enter an username: ");
-    
-                string password = String.Empty;
-                string passwordConfirm = String.Empty;
-                string username = Console.ReadLine();
-                bool passwordMatches = false;
+#elif (RELEASE)
+            Console.Write("Please enter an username: ");
 
-                // If he exists sign in else sign up
-                if (User.UserAlreadyExists(username))
-                {
-                    bool rightPassword = askExistingPassword(username);
-    
-                    if (!rightPassword)
-                    {
-                        Displayer.DisplayError("Too many attempts, exiting...");
-                        Environment.Exit(1);
-                    }
-                    Console.Clear();
-                }
-                else
-                {
-                    while (!passwordMatches)
-                    {
-                        Console.Write("new password (empty for default): ");
-                        password = Displayer.askPassword();
-    
-                        Console.Write("confing password (empty for default): ");
-                        passwordConfirm = Displayer.askPassword();
-    
-                        if (password == passwordConfirm)
-                            passwordMatches = true;
-                        else
-                            Displayer.DisplayError("Passwords do not match");
-                    }
-                }
+            string password = String.Empty;
+            string username = Console.ReadLine();
 
-                // It will automatically sign in/up the user
-                User = new User(username, password);
-            #endif
+            // If he exists sign in else sign up
+            if (User.UserAlreadyExists(username))
+            {
+                bool rightPassword = askExistingPassword(username);
+
+                if (!rightPassword)
+                {
+                    Displayer.DisplayError("Too many attempts, exiting...");
+                    Environment.Exit(1);
+                }
+                Console.Clear();
+            }
+            else
+            {
+                password = AskNewPassword();
+            }
+
+            // It will automatically sign in/up the user
+            User = new User(username, password);
+#endif
             Start();
+        }
+
+        public static string AskNewPassword()
+        {
+            bool passwordMatches = false;
+            string password = String.Empty;
+            string passwordConfirm = String.Empty;
+
+            while (!passwordMatches)
+            {
+                Console.Write("new password (empty for default): ");
+                password = Displayer.askPassword();
+
+                Console.Write("confing password (empty for default): ");
+                passwordConfirm = Displayer.askPassword();
+
+                if (password == passwordConfirm)
+                    passwordMatches = true;
+                else
+                    Displayer.DisplayError("Passwords do not match");
+            }
+
+            if (password == String.Empty)
+                return "gdh";
+            else
+                return password;
         }
 
         /// <summary>

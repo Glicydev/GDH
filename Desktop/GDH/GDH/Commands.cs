@@ -65,7 +65,6 @@ namespace GDH
         public static void UserDel(string username)
         {
             GDH.UserDel(username);
-            Displayer.displayConfirmation(username + "'s account has been succefully deleted !");
         }
 
         /// <summary>
@@ -109,25 +108,11 @@ namespace GDH
                 if (!rightPassword)
                     return;
 
-                while (true)
-                {
-                    Console.WriteLine();
-                    Console.Write("New password (empty for default): ");
-                    newPassword = Displayer.askPassword();
-                    Console.Write("Confirm new password (empty for default): ");
-                    newPasswordConfirm = Displayer.askPassword();
-
-                    if (newPassword == newPasswordConfirm)
-                    {
-                        User.ChangePassword(username, newPassword);
-                        Displayer.displayConfirmation("Password changed successfully !");
-                        break;
-                    }
-                    else
-                    {
-                        Displayer.DisplayError("Passwords do not match, please try again.");
-                    }
-                }
+                // Ask the new password then change it
+                Console.WriteLine();
+                newPassword = GDH.AskNewPassword();
+                User.ChangePassword(username, newPassword);
+                Displayer.displayConfirmation("Password changed successfully !");
             }
         }
 
@@ -185,16 +170,16 @@ namespace GDH
             // Help displaying
             Console.WriteLine(bigSpace + "|".PadRight(totalLineLength - 1, '-') + "|");
 
-            PrintCenteredText("help -> Manual of GDH.", totalLineLength);
-            PrintCenteredText("clear -> Clear the console.", totalLineLength);
-            PrintCenteredText("exit -> Exit the application.", totalLineLength);
-            PrintCenteredText("gdf -> Display the GDF.", totalLineLength);
-            PrintCenteredText("echo -> Echo somethings.", totalLineLength);
-            PrintCenteredText("logout -> Logout from the actual user.", totalLineLength);
-            PrintCenteredText("userdel -> Delete an user.", totalLineLength);
-            PrintCenteredText("userlist -> Get the list of all the users", totalLineLength);
-            PrintCenteredText("changepw -> Change the password of an user.", totalLineLength);
-            PrintCenteredText("sudo -> Execute an command as administrator", totalLineLength);
+            PrintLeftText("help -> Manual of GDH.", totalLineLength);
+            PrintLeftText("clear -> Clear the console.", totalLineLength);
+            PrintLeftText("exit -> Exit the application.", totalLineLength);
+            PrintLeftText("gdf -> Display the GDF.", totalLineLength);
+            PrintLeftText("echo -> Echo somethings.", totalLineLength);
+            PrintLeftText("logout -> Logout from the actual user.", totalLineLength);
+            PrintLeftText("userdel -> Delete an user.", totalLineLength);
+            PrintLeftText("userlist -> Get the list of all the users", totalLineLength);
+            PrintLeftText("changepw -> Change the password of an user.", totalLineLength);
+            PrintLeftText("sudo -> Execute an command as administrator.", totalLineLength);
 
             Console.WriteLine(bigSpace + "|".PadRight(totalLineLength - 1, '-') + "|");
         }
@@ -205,19 +190,14 @@ namespace GDH
         /// <param name="prefix"></param>
         /// <param name="text"></param>
         /// <param name="totalLineLength"></param>
-        static void PrintCenteredText(string text, int totalLineLength)
+        static void PrintLeftText(string text, int totalLineLength)
         {
-            int padding = (totalLineLength - text.Length) / 2 - 1;
-            int rightPadding = padding;
-
-            if (text.Length % 2 == 0)
-                rightPadding -= 1;
+            int padding = totalLineLength - text.Length - 4;
 
             string paddingString = new string(' ', padding);
-            string rightPaddingString = new string(' ', rightPadding);
-            string centeredText = paddingString + text + rightPaddingString;
+            string centeredText = text + paddingString;
 
-            Console.WriteLine(bigSpace + "|" + centeredText + " |");
+            Console.WriteLine(bigSpace + "| " + centeredText + " |");
         }
 
         /// <summary>
