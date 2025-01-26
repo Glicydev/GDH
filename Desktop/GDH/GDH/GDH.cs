@@ -42,7 +42,7 @@ namespace GDH
             {
                 Console.Write(User.Username + "@");
                 Displayer.displayWithColor("GDH", ConsoleColor.DarkGreen);
-                Console.Write("> ");
+                Console.Write(" -> ");
 
                 command = Console.ReadLine().ToLower();
 
@@ -54,53 +54,6 @@ namespace GDH
         public static int getPermissions()
         {
             return User.PermissionLevel;
-        }
-
-        /// <summary>
-        /// Delete an user from the database.
-        /// </summary>
-        /// <param name="username"></param>
-        public static void UserDel(string username)
-        {
-            string error = String.Empty;
-            string userPassword = SQLiteConnection.GetPasswd(username);
-            bool rightPassword = false;
-
-            if (username == null)
-            {
-                error = "Please enter an username";
-            }
-            else if (username == User.Username)
-            {
-                error = "You can't delete yourself !";
-            }
-            else if (!User.UserAlreadyExists(username))
-            {
-                error = "User does not exist";
-            }
-            else
-            {
-                if (GDH.getPermissions() >= 2)
-                    rightPassword = true;
-
-                else
-                    rightPassword = GDH.askExistingPassword(username);
-
-                if (!rightPassword)
-                {
-                    error = "Too many tries";
-                }
-
-                if (error != String.Empty)
-                {
-                    Displayer.DisplayError(error);
-                }
-                else
-                {
-                    SQLiteConnection.DeleteUser(username);
-                    Displayer.displayConfirmation(username + "'s account has been succefully deleted !");
-                }
-            }
         }
 
         public static bool askExistingPassword(string username)
@@ -143,35 +96,35 @@ namespace GDH
         {
             SQLiteConnection.Start();
 
-#if (DEBUG)
+            #if (DEBUG)
                 User = new User("root", "gdh");
 
-#elif (RELEASE)
-            Console.Write("Please enter an username: ");
+            #elif (RELEASE)
+                Console.Write("Please enter an username: ");
+    
+                string password = String.Empty;
+                string username = Console.ReadLine();
 
-            string password = String.Empty;
-            string username = Console.ReadLine();
-
-            // If he exists sign in else sign up
-            if (User.UserAlreadyExists(username))
-            {
-                bool rightPassword = askExistingPassword(username);
-
-                if (!rightPassword)
+                // If he exists sign in else sign up
+                if (User.UserAlreadyExists(username))
                 {
-                    Displayer.DisplayError("Too many attempts, exiting...");
+                    bool rightPassword = askExistingPassword(username);
+    
+                    if (!rightPassword)
+                    {
+                        Displayer.DisplayError("Too many attempts, exiting...");
                     Environment.Exit(1);
-                }
+                    }
                 Console.Clear();
-            }
-            else
-            {
-                password = AskNewPassword();
-            }
+                }
+                else
+                {
+                    password = AskNewPassword();
+                }
 
-            // It will automatically sign in/up the user
-            User = new User(username, password);
-#endif
+                // It will automatically sign in/up the user
+                User = new User(username, password);
+            #endif
             Start();
         }
 

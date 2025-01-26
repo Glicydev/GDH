@@ -62,9 +62,51 @@ namespace GDH
             }
         }
 
+        /// <summary>
+        /// Delete an user from the database.
+        /// </summary>
+        /// <param name="username">The username of the user</param>
         public static void UserDel(string username)
         {
-            GDH.UserDel(username);
+            string error = String.Empty;
+            string userPassword = SQLiteConnection.GetPasswd(username);
+            bool rightPassword = false;
+
+            if (username == null)
+            {
+                error = "Please enter an username";
+            }
+            else if (username == GDH.User.Username)
+            {
+                error = "You can't delete yourself !";
+            }
+            else if (!User.UserAlreadyExists(username))
+            {
+                error = "User does not exist";
+            }
+            else
+            {
+                if (GDH.getPermissions() >= 2)
+                    rightPassword = true;
+
+                else
+                    rightPassword = GDH.askExistingPassword(username);
+
+                if (!rightPassword)
+                {
+                    error = "Too many tries";
+                }
+
+                if (error != string.Empty)
+                {
+                    Displayer.DisplayError(error);
+                }
+                else
+                {
+                    SQLiteConnection.DeleteUser(username);
+                    Displayer.displayConfirmation(username + "'s account has been succefully deleted !");
+                }
+            }
         }
 
         /// <summary>
