@@ -21,32 +21,18 @@ namespace GDH
             if (string.IsNullOrEmpty(command))
                 return;
 
-            switch (command)
+            try
             {
-                case "echo":
-                    Commands.Echo(options);
-                    break;
-                case "userdel":
-                    Commands.commands[command].Item2(options);
-                    break;
-                case "changepw":
-                    Commands.commands[command].Item2(options);
-                    break;
-                default:
-                    try
-                    {
-                        if (!Commands.commands.ContainsKey(command))
-                        {
-                            throw new Exception("Unknown command: " + command);
-                        }
+                if (!Commands.commands.ContainsKey(command))
+                {
+                    throw new Exception("Unknown command: " + command);
+                }
 
-                        Commands.commands[command].Item2(null);
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new Exception(ex.Message);
-                    }
-                    break;
+                Commands.commands[command].Item2(options);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
 
@@ -80,6 +66,15 @@ namespace GDH
             {
                 Displayer.DisplayError(ex.Message);
             }
+        }
+
+        public static void ExecuteAsRoot(string command)
+        {
+            int level = GDH.getPermissions();
+
+            GDH.User.PermissionLevel = 2;
+            Execute(command);
+            GDH.User.PermissionLevel = level;
         }
     }
 }

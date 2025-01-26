@@ -22,7 +22,7 @@ namespace GDH
 
         // attributes
         public static TimeSpan StartTime { get; } = DateTime.Now.TimeOfDay;
-        private static User _user;
+        public static User User;
 
         /// <summary>
         /// Start the shell.
@@ -39,8 +39,8 @@ namespace GDH
 
             while (true && command != "logout")
             {
-                Console.Write(_user.Username);
-                Displayer.displayWithColor("@GDH", ConsoleColor.DarkGreen);
+                Console.Write(User.Username + "@");
+                Displayer.displayWithColor("GDH", ConsoleColor.DarkGreen);
                 Console.Write("> ");
 
                 command = Console.ReadLine().ToLower();
@@ -52,7 +52,7 @@ namespace GDH
 
         public static int getPermissions()
         {
-            return _user.PermissionLevel;
+            return User.PermissionLevel;
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace GDH
             {
                 error = "Please enter an username";
             }
-            else if (username == _user.Username)
+            else if (username == User.Username)
             {
                 error = "You can't delete yourself !";
             }
@@ -132,7 +132,7 @@ namespace GDH
             SQLiteConnection.Start();
 
             #if (DEBUG)
-                _user = new User("root", "gdh");
+                User = new User("root", "gdh");
 
             #elif (RELEASE)
                 Console.Write("Please enter an username: ");
@@ -172,7 +172,7 @@ namespace GDH
                 }
 
                 // It will automatically sign in/up the user
-                _user = new User(username, password);
+                User = new User(username, password);
             #endif
             Start();
         }

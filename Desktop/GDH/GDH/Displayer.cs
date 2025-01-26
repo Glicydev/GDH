@@ -8,6 +8,8 @@ namespace GDH
 {
     public class Displayer
     {
+        private const string bigSpace = "   ";
+
         /// <summary>
         /// Show an unknown command message.
         /// </summary>
@@ -86,6 +88,18 @@ namespace GDH
             Console.WriteLine("> " + message);
             Console.WriteLine();
             Console.ResetColor();
+        }
+
+        /// <summary>
+        /// Display a usage message.
+        /// </summary>
+        /// <param name="usage">The usage of the command</param>
+        /// <param name="description"The description of the command</param>
+        public static void displayUsage(string usage, string description)
+        {
+            Console.WriteLine(bigSpace + "> Usage: " + usage);
+            Console.WriteLine(bigSpace + "  " + description);
+            Console.WriteLine();
         }
     }
 }

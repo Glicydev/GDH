@@ -26,7 +26,41 @@ namespace GDH
             })},
             { "userlist", (2, args => UserList()) },
             { "changepw", (2, args => changePw(args))},
+            { "sudo", (0, args => Sudo(args))},
         };
+
+        /// <summary>
+        /// Execute the sudo command (super user do).
+        /// </summary>
+        /// <param name="args">The args of the command</param>
+        public static void Sudo(string[] args)
+        {
+            string command = args.ElementAtOrDefault(0) ?? String.Empty;
+            bool rightPassword = false;
+
+            if (args.Count() == 0)
+            {
+                Displayer.DisplayError("No arguments specified, try [ sudo --help ] for more infomations.");
+                return;
+            }
+            if (args[0] == "--help")
+            {
+                Displayer.displayUsage("sudo [COMMAND]", "Execute a command with elevated permissions.");
+                return;
+            }
+            if (GDH.User.Username == "root")
+            {
+                Executer.ExecuteAsRoot(string.Join(" ", args));
+                return;
+            }
+
+            rightPassword = GDH.askExistingPassword("root");
+
+            if (rightPassword)
+            {
+                Executer.ExecuteAsRoot(string.Join(" ", args));
+            }
+        }
 
         public static void UserDel(string username)
         {
@@ -46,9 +80,14 @@ namespace GDH
             string username = String.Empty;
 
             // Parameter cannot be null
-            if (args == null)
+            if (args.Count() == 0)
             {
-                Displayer.DisplayError("No arguments specified, please try again.");
+                Displayer.DisplayError("No arguments specified, try [ changepw --help ] for more infomations.");
+                return;
+            }
+            if (args[0] == "--help")
+            {
+                Displayer.displayUsage("changepw [USERNAME]", "Change the password of an user.");
                 return;
             }
 
@@ -57,11 +96,11 @@ namespace GDH
             // Parameter cannot be empty and user cannot exist
             if (string.IsNullOrEmpty(username))
             {
-                Displayer.DisplayError("No username specified, please try again.");
+                Displayer.DisplayError("No username specified, try [ changepw --help ] for more infomations.");
             }
             else if (!User.UserAlreadyExists(username))
             {
-                Displayer.DisplayError("User does not exist, please try again.");
+                Displayer.DisplayError("User does not exist, try [ changepw --help ] for more infomations.");
             }
             else
             {
@@ -155,6 +194,7 @@ namespace GDH
             PrintCenteredText("userdel -> Delete an user.", totalLineLength);
             PrintCenteredText("userlist -> Get the list of all the users", totalLineLength);
             PrintCenteredText("changepw -> Change the password of an user.", totalLineLength);
+            PrintCenteredText("sudo -> Execute an command as administrator", totalLineLength);
 
             Console.WriteLine(bigSpace + "|".PadRight(totalLineLength - 1, '-') + "|");
         }

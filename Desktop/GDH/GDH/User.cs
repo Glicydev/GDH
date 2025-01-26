@@ -15,7 +15,10 @@ namespace GDH
         private int _permissionLevel;
 
         public string Username { get => _username; }
-        public int PermissionLevel { get => _permissionLevel; }
+        public int PermissionLevel {
+            get { return _permissionLevel; }
+            set { _permissionLevel = value; }
+        }
 
         public User(string username, string password)
         {
@@ -35,7 +38,7 @@ namespace GDH
         {
             string commandString = "INSERT INTO users(userName, password) VALUES(@username, @passwd)";
 
-            if (String.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(password))
                 password = "gdh";
 
             using (SQLiteCommand command = new SQLiteCommand(commandString, SQLiteConnection.Connection))
