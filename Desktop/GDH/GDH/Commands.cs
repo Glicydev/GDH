@@ -26,7 +26,8 @@ namespace GDH
             })},
             { "userlist", (2, args => UserList()) },
             { "changepw", (2, args => changePw(args))},
-            { "sudo", (0, args => Sudo(args))},
+            { "sudo", (1, args => Sudo(args))},
+            { "changeperms", (2, args => ChangePerms(args))},
         };
 
         /// <summary>
@@ -45,7 +46,7 @@ namespace GDH
             }
             if (args[0] == "--help")
             {
-                Displayer.displayUsage("sudo [COMMAND]", "Execute a command with elevated permissions.");
+                Displayer.DisplayUsage("sudo [COMMAND]", "Execute a command with elevated permissions.");
                 return;
             }
             if (GDH.User.Username == "root")
@@ -128,7 +129,7 @@ namespace GDH
             }
             if (args[0] == "--help")
             {
-                Displayer.displayUsage("changepw [USERNAME]", "Change the password of an user.");
+                Displayer.DisplayUsage("changepw [USERNAME]", "Change the password of an user.");
                 return;
             }
 
@@ -179,6 +180,40 @@ namespace GDH
         public static void Logout()
         {
             GDH.Logout();
+        }
+
+        public static void ChangePerms(string[] args)
+        {
+            string username = "";
+            string permissionLevelString = args.ElementAtOrDefault(1);
+            int permissionLevel = 0;
+
+            if (args.Count() == 0 || !int.TryParse(permissionLevelString, out permissionLevel) || permissionLevel < 1 || permissionLevel > 2)
+            {
+                Displayer.DisplayError("Invalid arguments, try [ changeperms --help ] for help");
+                return;
+            }
+            if (args[0] == "--help")
+            {
+                Displayer.DisplayUsage("changeperms [ USERNAME ] [ PERMISSION LEVEL ]", "The permission level must be 1 for normal user or 2 for admin");
+                return;
+            }
+
+            username = args[0];
+
+            if (!User.UserAlreadyExists(username))
+            {
+                Displayer.DisplayError($"user \"{username}\" does not exist");
+            }
+            else if (username == "root")
+            {
+                Displayer.DisplayError("You can't change the root's password !");
+            }
+            else
+            {
+                User.ChangePermissionLevel(username, permissionLevel);
+                Displayer.displayConfirmation($"{username}'s permission has been succefully set to {permissionLevel}");
+            }
         }
 
         public static void GDF()

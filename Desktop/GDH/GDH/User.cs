@@ -52,6 +52,21 @@ namespace GDH
             }
         }
 
+        /// <summary>
+        /// Changes the permissions level of an user in the database
+        /// </summary>
+        /// <param name="username">The username of the user</param>
+        /// <param name="permissionLevel">The level of permissions to set</param>
+        public static void ChangePermissionLevel(string username, int permissionLevel)
+        {
+            string commandString = "UPDATE users SET permissions = @permissionLevel WHERE userName = @username";
+
+            using SQLiteCommand command = new SQLiteCommand(commandString, SQLiteConnection.Connection);
+            command.Parameters.AddWithValue("@permissionLevel", permissionLevel);
+            command.Parameters.AddWithValue("@username", username);
+            command.ExecuteNonQuery();
+        }
+
         private void SignIn(string username, string password)
         {
             string commandString = "SELECT userName, permissions FROM users WHERE userName = @username";
