@@ -5,6 +5,8 @@ using System.Linq;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
+using GDH.database;
+using GDH.Managers;
 
 namespace GDH
 {
@@ -31,14 +33,14 @@ namespace GDH
         {
             Console.Clear();
             FColor(StyleColor);
-            string command = String.Empty;
+            string command = string.Empty;
             string[] commandWithParams;
             string[] commandParams;
             Console.WriteLine("Welcome to GDH ! Type 'help' for the list of the commands");
             Console.ResetColor();
             Console.WriteLine();
 
-            while (true && command != "logout")
+            while (command != "logout")
             {
                 Console.Write(User.Username + "@");
                 Displayer.displayWithColor("GDH", ConsoleColor.DarkGreen);
@@ -61,7 +63,7 @@ namespace GDH
             int attempts = 0;
             string userPassword = SQLiteConnection.GetPasswd(username);
             bool rightPassword = false;
-            string password = String.Empty;
+            string password = string.Empty;
 
             while (!rightPassword && attempts < 3)
             {
@@ -96,10 +98,10 @@ namespace GDH
         {
             SQLiteConnection.Start();
 
-            #if (DEBUG)
-                User = new User("root", SQLiteConnection.GetPasswd("root"));
+#if (DEBUG)
+            User = new User("root", SQLiteConnection.GetPasswd("root"));
 
-            #elif (RELEASE)
+#elif (RELEASE)
                 Console.Write("Please enter an username: ");
     
                 string password = String.Empty;
@@ -124,15 +126,15 @@ namespace GDH
 
                 // It will automatically sign in/up the user
                 User = new User(username, password);
-            #endif
+#endif
             Start();
         }
 
         public static string AskNewPassword()
         {
             bool passwordMatches = false;
-            string password = String.Empty;
-            string passwordConfirm = String.Empty;
+            string password = string.Empty;
+            string passwordConfirm = string.Empty;
 
             while (!passwordMatches)
             {
@@ -148,7 +150,7 @@ namespace GDH
                     Displayer.DisplayError("Passwords do not match");
             }
 
-            if (password == String.Empty)
+            if (password == string.Empty)
                 return "gdh";
             else
                 return password;

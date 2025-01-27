@@ -8,7 +8,7 @@ using System.Data.SQLite;
 using static System.Net.Mime.MediaTypeNames;
 using System.Data;
 
-namespace GDH
+namespace GDH.database
 {
     public class SQLiteConnection
     {
@@ -40,7 +40,7 @@ namespace GDH
                     {
                         return reader.GetString(0);
                     }
-                    return String.Empty;
+                    return string.Empty;
                 }
             }
         }
@@ -51,7 +51,7 @@ namespace GDH
         /// <param name="username"></param>
         public static void DeleteUser(string username)
         {
-            using (SQLiteCommand command = new SQLiteCommand("DELETE FROM users WHERE userName = @username", SQLiteConnection.Connection))
+            using (SQLiteCommand command = new SQLiteCommand("DELETE FROM users WHERE userName = @username", Connection))
             {
                 command.Parameters.AddWithValue("@username", username);
                 command.ExecuteNonQuery();

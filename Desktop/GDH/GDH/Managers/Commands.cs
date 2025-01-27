@@ -5,8 +5,9 @@ using System.Net;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
+using GDH.database;
 
-namespace GDH
+namespace GDH.Managers
 {
     public class Commands
     {
@@ -21,7 +22,7 @@ namespace GDH
             { "echo", (1, args => Echo(args)) },
             { "logout", (1, args => GDH.Logout()) },
             { "userdel", (2, args => {
-                string username = args.ElementAtOrDefault(0) ?? String.Empty;
+                string username = args.ElementAtOrDefault(0) ?? string.Empty;
                 UserDel(username);
             })},
             { "userlist", (2, args => UserList()) },
@@ -36,7 +37,7 @@ namespace GDH
         /// <param name="args">The args of the command</param>
         public static void Sudo(string[] args)
         {
-            string command = args.ElementAtOrDefault(0) ?? String.Empty;
+            string command = args.ElementAtOrDefault(0) ?? string.Empty;
             bool rightPassword = false;
 
             if (args.Count() == 0)
@@ -69,7 +70,7 @@ namespace GDH
         /// <param name="username">The username of the user</param>
         public static void UserDel(string username)
         {
-            string error = String.Empty;
+            string error = string.Empty;
             string userPassword = SQLiteConnection.GetPasswd(username);
             bool rightPassword = false;
 
@@ -117,9 +118,9 @@ namespace GDH
         public static void changePw(string[] args)
         {
             bool rightPassword = false;
-            string newPassword = String.Empty;
-            string newPasswordConfirm = String.Empty;
-            string username = String.Empty;
+            string newPassword = string.Empty;
+            string newPasswordConfirm = string.Empty;
+            string username = string.Empty;
 
             // Parameter cannot be null
             if (args.Count() == 0)
@@ -133,7 +134,7 @@ namespace GDH
                 return;
             }
 
-            username = args.ElementAtOrDefault(0) ?? String.Empty;
+            username = args.ElementAtOrDefault(0) ?? string.Empty;
 
             // Parameter cannot be empty and user cannot exist
             if (string.IsNullOrEmpty(username))
@@ -311,7 +312,7 @@ namespace GDH
             bool big = false;
             bool small = false;
             int nbOptions = options.Count;
-            string message = String.Empty;
+            string message = string.Empty;
             string option = string.Empty;
             Console.WriteLine(message);
 

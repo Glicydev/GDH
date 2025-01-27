@@ -7,7 +7,7 @@ using System.Data.Common;
 using System.Data.SQLite;
 using System.Runtime.CompilerServices;
 
-namespace GDH
+namespace GDH.database
 {
     public class User
     {
@@ -15,7 +15,8 @@ namespace GDH
         private int _permissionLevel;
 
         public string Username { get => _username; }
-        public int PermissionLevel {
+        public int PermissionLevel
+        {
             get { return _permissionLevel; }
             set { _permissionLevel = value; }
         }
@@ -61,10 +62,12 @@ namespace GDH
         {
             string commandString = "UPDATE users SET permissions = @permissionLevel WHERE userName = @username";
 
-            using SQLiteCommand command = new SQLiteCommand(commandString, SQLiteConnection.Connection);
-            command.Parameters.AddWithValue("@permissionLevel", permissionLevel);
-            command.Parameters.AddWithValue("@username", username);
-            command.ExecuteNonQuery();
+            using (SQLiteCommand command = new SQLiteCommand(commandString, SQLiteConnection.Connection))
+            {
+                command.Parameters.AddWithValue("@permissionLevel", permissionLevel);
+                command.Parameters.AddWithValue("@username", username);
+                command.ExecuteNonQuery();
+            }
         }
 
         private void SignIn(string username, string password)

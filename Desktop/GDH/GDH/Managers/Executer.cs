@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GDH
+namespace GDH.Managers
 {
     public class Executer
     {
@@ -23,11 +23,6 @@ namespace GDH
 
             try
             {
-                if (!Commands.commands.ContainsKey(command))
-                {
-                    throw new Exception("Unknown command: " + command);
-                }
-
                 Commands.commands[command].Item2(options);
             }
             catch (Exception ex)
