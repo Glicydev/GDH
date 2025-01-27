@@ -191,7 +191,7 @@ namespace GDH
             {
                 "\u001b[38;5;34m  _______   \u001b[38;5;34m________    \u001b[38;5;34m__    \u001b[38;5;34m__",
                 "\u001b[38;5;35m /\" _   \"| \u001b[38;5;35m|\"       \"\\ \u001b[38;5;35m/\" |  | \"\\" + bigSpace + " Version: " + GDH.version,
-                "\u001b[38;5;36m(: ( \\___) \u001b[38;5;36m(.  ___  :)(:  (__)  :)" + bigSpace + "Uptime: " + uptime.ToString(@"hh\:mm\:ss"),
+                "\u001b[38;5;36m(: ( \\___) \u001b[38;5;36m(.  ___  :)(:  (__)  :)" + bigSpace + "Uptime: " + uptime.ToString(@"hh\h\ mm\m\ ss\s"),
                 "\u001b[38;5;37m \\/ \\      \u001b[38;5;37m|: \\   ) || \u001b[38;5;37m\\/      \\/",
                 "\u001b[38;5;38m //  \\ ___ \u001b[38;5;38m(| (___\\ || \u001b[38;5;38m//  __  \\\\",
                 "\u001b[38;5;39m(:   _(  _||:       :)(:  (  )  :) ",
@@ -214,21 +214,21 @@ namespace GDH
         public static void Help()
         {
             int consoleWidth = Console.WindowWidth;
-            int totalLineLength = 50;
+            int totalLineLength = 55;
 
             // Help displaying
             Console.WriteLine(bigSpace + "|".PadRight(totalLineLength - 1, '-') + "|");
 
-            PrintLeftText("help -> Manual of GDH.", totalLineLength);
-            PrintLeftText("clear -> Clear the console.", totalLineLength);
-            PrintLeftText("exit -> Exit the application.", totalLineLength);
-            PrintLeftText("gdf -> Display the GDF.", totalLineLength);
-            PrintLeftText("echo -> Echo somethings.", totalLineLength);
-            PrintLeftText("logout -> Logout from the actual user.", totalLineLength);
-            PrintLeftText("userdel -> Delete an user.", totalLineLength);
+            PrintLeftText("    help -> Manual of GDH.", totalLineLength);
+            PrintLeftText("   clear -> Clear the console.", totalLineLength);
+            PrintLeftText("    exit -> Exit the application.", totalLineLength);
+            PrintLeftText("     gdf -> Display the GDF.", totalLineLength);
+            PrintLeftText("    echo -> Echo somethings.", totalLineLength);
+            PrintLeftText("  logout -> Logout from the actual user.", totalLineLength);
+            PrintLeftText(" userdel -> Delete an user.", totalLineLength);
             PrintLeftText("userlist -> Get the list of all the users", totalLineLength);
             PrintLeftText("changepw -> Change the password of an user.", totalLineLength);
-            PrintLeftText("sudo -> Execute an command as administrator.", totalLineLength);
+            PrintLeftText("    sudo -> Execute an command as administrator.", totalLineLength);
 
             Console.WriteLine(bigSpace + "|".PadRight(totalLineLength - 1, '-') + "|");
         }

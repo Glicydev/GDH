@@ -97,7 +97,7 @@ namespace GDH
             SQLiteConnection.Start();
 
             #if (DEBUG)
-                User = new User("root", "gdh");
+                User = new User("root", SQLiteConnection.GetPasswd("root"));
 
             #elif (RELEASE)
                 Console.Write("Please enter an username: ");
