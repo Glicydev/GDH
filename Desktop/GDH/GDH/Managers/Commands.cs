@@ -86,6 +86,10 @@ namespace GDH.Managers
             {
                 error = "User does not exist";
             }
+            else if (username == "root")
+            {
+                error = "You can't delete the root account !";
+            }
             else
             {
                 if (GDH.getPermissions() >= 2)
@@ -98,16 +102,16 @@ namespace GDH.Managers
                 {
                     error = "Too many tries";
                 }
+            }
 
-                if (error != string.Empty)
-                {
-                    Displayer.DisplayError(error);
-                }
-                else
-                {
-                    SQLiteConnection.DeleteUser(username);
-                    Displayer.displayConfirmation(username + "'s account has been succefully deleted !");
-                }
+            if (error != string.Empty)
+            {
+                Displayer.DisplayError(error);
+            }
+            else
+            {
+                SQLiteConnection.DeleteUser(username);
+                Displayer.displayConfirmation(username + "'s account has been succefully deleted !");
             }
         }
 
