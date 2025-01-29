@@ -55,11 +55,16 @@ namespace GDH.Managers
                 Executer.ExecuteAsRoot(string.Join(" ", args));
                 return;
             }
-
-            rightPassword = GDH.askExistingPassword("root");
+            if (!GDH.User.RootAccess) {
+                rightPassword = GDH.askExistingPassword("root");
+            }
+            else {
+                rightPassword = true;
+            }
 
             if (rightPassword)
             {
+                GDH.User.RootAccess = true;
                 Executer.ExecuteAsRoot(string.Join(" ", args));
             }
         }

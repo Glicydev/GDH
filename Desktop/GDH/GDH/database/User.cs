@@ -11,8 +11,16 @@ namespace GDH.database
 {
     public class User
     {
+        private bool _rootAccess = false;
         private string _username;
         private int _permissionLevel;
+
+        public bool RootAccess
+        {
+            get { return _rootAccess; }
+            set { _rootAccess = value; }
+        }
+
 
         public string Username { get => _username; }
         public int PermissionLevel
