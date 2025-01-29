@@ -262,20 +262,17 @@ namespace GDH.Managers
             int totalLineLength = 55;
 
             // Help displaying
-            Console.WriteLine(bigSpace + "|".PadRight(totalLineLength - 1, '-') + "|");
-
-            PrintLeftText("    help -> Manual of GDH.", totalLineLength);
-            PrintLeftText("   clear -> Clear the console.", totalLineLength);
-            PrintLeftText("    exit -> Exit the application.", totalLineLength);
-            PrintLeftText("     gdf -> Display the GDF.", totalLineLength);
-            PrintLeftText("    echo -> Echo somethings.", totalLineLength);
-            PrintLeftText("  logout -> Logout from the actual user.", totalLineLength);
-            PrintLeftText(" userdel -> Delete an user.", totalLineLength);
-            PrintLeftText("userlist -> Get the list of all the users", totalLineLength);
-            PrintLeftText("changepw -> Change the password of an user.", totalLineLength);
-            PrintLeftText("    sudo -> Execute an command as administrator.", totalLineLength);
-
-            Console.WriteLine(bigSpace + "|".PadRight(totalLineLength - 1, '-') + "|");
+            Console.WriteLine();
+            Console.WriteLine("    help -> Manual of GDH.", totalLineLength);
+            Console.WriteLine("   clear -> Clear the console.", totalLineLength);
+            Console.WriteLine("    exit -> Exit the application.", totalLineLength);
+            Console.WriteLine("     gdf -> Display the GDF.", totalLineLength);
+            Console.WriteLine("    echo -> Echo somethings.", totalLineLength);
+            Console.WriteLine("  logout -> Logout from the actual user.", totalLineLength);
+            Console.WriteLine(" userdel -> Delete an user.", totalLineLength);
+            Console.WriteLine("userlist -> Get the list of all the users", totalLineLength);
+            Console.WriteLine("changepw -> Change the password of an user.", totalLineLength);
+            Console.WriteLine("    sudo -> Execute an command as administrator.", totalLineLength);
         }
 
         /// <summary>
