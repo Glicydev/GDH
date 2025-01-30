@@ -15,9 +15,10 @@ namespace GDH.Managers
 
         public static Dictionary<string, (int PermissionLevel, Action<string[]>)> commands = new Dictionary<string, (int, Action<string[]>)>
         {
+            { "help", (1, args => Help()) },
+            { "?", (1, args => Help()) },
             { "exit", (1, args => Exit()) },
             { "gdf", (1, args => GDF()) },
-            { "help", (1, args => Help()) },
             { "clear", (1, args => Console.Clear()) },
             { "echo", (1, args => Echo(args)) },
             { "logout", (1, args => GDH.Logout()) },
