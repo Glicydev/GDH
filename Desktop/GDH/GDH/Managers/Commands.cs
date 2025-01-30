@@ -258,21 +258,21 @@ namespace GDH.Managers
         /// </summary>
         public static void Help()
         {
+            const int totalWidthLeft = 12;
+            const string arrow = "->";
             int consoleWidth = Console.WindowWidth;
-            int totalLineLength = 55;
 
             // Help displaying
             Console.WriteLine();
-            Console.WriteLine("    help -> Manual of GDH.", totalLineLength);
-            Console.WriteLine("   clear -> Clear the console.", totalLineLength);
-            Console.WriteLine("    exit -> Exit the application.", totalLineLength);
-            Console.WriteLine("     gdf -> Display the GDF.", totalLineLength);
-            Console.WriteLine("    echo -> Echo somethings.", totalLineLength);
-            Console.WriteLine("  logout -> Logout from the actual user.", totalLineLength);
-            Console.WriteLine(" userdel -> Delete an user.", totalLineLength);
-            Console.WriteLine("userlist -> Get the list of all the users", totalLineLength);
-            Console.WriteLine("changepw -> Change the password of an user.", totalLineLength);
-            Console.WriteLine("    sudo -> Execute an command as administrator.", totalLineLength);
+            PrintRightText("help ",  arrow + " Manual of GDH.", totalWidthLeft);
+            PrintRightText("clear ", arrow + " Clear the console.", totalWidthLeft);
+            PrintRightText("exit ", arrow + " Exit the application.", totalWidthLeft);
+            PrintRightText("gdf ", arrow + " Display the GDF.", totalWidthLeft);
+            PrintRightText("logout ", arrow + " Logout from the actual user.", totalWidthLeft);
+            PrintRightText("userdel ", arrow + " Delete an user.", totalWidthLeft);
+            PrintRightText("userlist ", arrow + " Get the list of all the users", totalWidthLeft);
+            PrintRightText("changepw ", arrow + " Change the password of an user.", totalWidthLeft);
+            PrintRightText("sudo ", arrow + " Execute an command as administrator.", totalWidthLeft);
         }
 
         /// <summary>
@@ -281,14 +281,9 @@ namespace GDH.Managers
         /// <param name="prefix"></param>
         /// <param name="text"></param>
         /// <param name="totalLineLength"></param>
-        static void PrintLeftText(string text, int totalLineLength)
+        static void PrintRightText(string text, string desc,  int totalWidthLeft)
         {
-            int padding = totalLineLength - text.Length - 4;
-
-            string paddingString = new string(' ', padding);
-            string centeredText = text + paddingString;
-
-            Console.WriteLine(bigSpace + "| " + centeredText + " |");
+            Console.WriteLine(text.PadLeft(totalWidthLeft, ' ') + desc);
         }
 
         /// <summary>
