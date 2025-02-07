@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Ludovic.armn\\Documents\\GitHub\\vgs\\medias\\GDH\\Desktop\\GDH\\GDH\\GDH.csproj": {}
+    "C:\\Users\\ludov\\Documents\\GitHub\\GDH\\GDH\\GDH.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Ludovic.armn\\Documents\\GitHub\\vgs\\medias\\GDH\\Desktop\\GDH\\GDH\\GDH.csproj": {
+    "C:\\Users\\ludov\\Documents\\GitHub\\GDH\\GDH\\GDH.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Ludovic.armn\\Documents\\GitHub\\vgs\\medias\\GDH\\Desktop\\GDH\\GDH\\GDH.csproj",
+        "projectUniqueName": "C:\\Users\\ludov\\Documents\\GitHub\\GDH\\GDH\\GDH.csproj",
         "projectName": "GDH",
-        "projectPath": "C:\\Users\\Ludovic.armn\\Documents\\GitHub\\vgs\\medias\\GDH\\Desktop\\GDH\\GDH\\GDH.csproj",
-        "packagesPath": "C:\\Users\\Ludovic.armn\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Ludovic.armn\\Documents\\GitHub\\vgs\\medias\\GDH\\Desktop\\GDH\\GDH\\obj\\",
+        "projectPath": "C:\\Users\\ludov\\Documents\\GitHub\\GDH\\GDH\\GDH.csproj",
+        "packagesPath": "C:\\Users\\ludov\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ludov\\Documents\\GitHub\\GDH\\GDH\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Ludovic.armn\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\ludov\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],

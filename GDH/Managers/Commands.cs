@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +31,7 @@ namespace GDH.Managers
             { "changepw", (2, args => changePw(args))},
             { "sudo", (1, args => Sudo(args))},
             { "changeperms", (2, args => ChangePerms(args))},
+            { "ping", (2, args => Ping(args))},
         };
 
         /// <summary>
@@ -175,6 +177,43 @@ namespace GDH.Managers
                 User.ChangePassword(username, newPassword);
                 Displayer.displayConfirmation("Password changed successfully !");
             }
+        }
+
+        public static void Ping(string[] args)
+        {
+            string hostname = String.Empty;
+            int port = 80;
+
+            // Parameter cannot be nullp
+            if (args.Count() == 0 || (args.Count() > 1 && (args.Count() != 3 || !int.TryParse(args[2], out _))))
+            {
+                Displayer.DisplayError("Bad arguments, try [ changepw --help ] for more infomations.");
+                return;
+            }
+            if (args[0] == "--help")
+            {
+                Displayer.DisplayUsage("ping [HOSTNAME] -p [PORT]", "Ping an hostmane with an port");
+                return;
+            }
+
+            hostname = args[0];
+
+            if (args.Count() > 1 && args[1] == "-p")
+            {
+                port = Convert.ToInt32(args[2]);
+            }
+
+            try
+            {
+                using (TcpClient client = new TcpClient(hostname, port)) {
+                    Displayer.displayWithColor($"> Client is on ({hostname}:{port})", GDH.ConfirmColor);
+                }
+            }
+            catch (SocketException ex)
+            {
+                Displayer.displayWithColor($"> Client is off ({hostname}:{port})", GDH.ErrColor);
+            }
+            Console.WriteLine();
         }
 
         /// <summary>
