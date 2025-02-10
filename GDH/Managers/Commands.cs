@@ -58,10 +58,12 @@ namespace GDH.Managers
                 Executer.ExecuteAsRoot(string.Join(" ", args));
                 return;
             }
-            if (!GDH.User.RootAccess) {
+            if (!GDH.User.RootAccess)
+            {
                 rightPassword = GDH.askExistingPassword("root");
             }
-            else {
+            else
+            {
                 rightPassword = true;
             }
 
@@ -179,40 +181,74 @@ namespace GDH.Managers
             }
         }
 
-        public static void Ping(string[] args)
+        /// <summary>
+        /// Check for the ping to be right structured
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        private static Dictionary<string, object> PingCheckFinish(string[] args)
         {
-            string hostname = String.Empty;
             int port = 80;
 
-            // Parameter cannot be nullp
             if (args.Count() == 0 || (args.Count() > 1 && (args.Count() != 3 || !int.TryParse(args[2], out _))))
             {
                 Displayer.DisplayError("Bad arguments, try [ changepw --help ] for more infomations.");
-                return;
+                return null;
             }
             if (args[0] == "--help")
             {
                 Displayer.DisplayUsage("ping [HOSTNAME] -p [PORT]", "Ping an hostmane with an port");
-                return;
+                return null;
             }
 
-            hostname = args[0];
+            string hostname = args[0];
+            if (hostname.StartsWith("http://") || hostname.StartsWith("https://"))
+            {
+                hostname = hostname.Replace("http://", "").Replace("https://", "");
+            }
 
             if (args.Count() > 1 && args[1] == "-p")
             {
                 port = Convert.ToInt32(args[2]);
             }
 
-            try
+            return new Dictionary<string, object>
             {
-                using (TcpClient client = new TcpClient(hostname, port)) {
-                    Displayer.displayWithColor($"> Client is on ({hostname}:{port})", GDH.ConfirmColor);
-                }
-            }
-            catch (SocketException ex)
+                { "hostname", hostname },
+                { "port", port }
+            };
+        }
+
+        /// <summary>
+        /// Ping an server and tell if it's on or off
+        /// </summary>
+        /// <param name="args"></param>
+        public static void Ping(string[] args)
+        {
+            string hostname = String.Empty;
+            int port = 80;
+
+            Dictionary<string, object> result = PingCheckFinish(args);
+
+            if (result == null)
             {
-                Displayer.displayWithColor($"> Client is off ({hostname}:{port})", GDH.ErrColor);
+                return;
             }
+
+            hostname = (string)result["hostname"];
+            port = (int)result["port"];
+
+            Pinger pinger = new Pinger(hostname, port);
+
+            if (pinger.PingCheck())
+            {
+                Displayer.displayWithColor($"> Server is on ({hostname}:{port})", GDH.ConfirmColor);
+            }
+            else
+            {
+                Displayer.displayWithColor($"> Server is off ({hostname}:{port})", GDH.ErrColor);
+            }
+
             Console.WriteLine();
         }
 
@@ -304,7 +340,7 @@ namespace GDH.Managers
 
             // Help displaying
             Console.WriteLine();
-            PrintRightText("help ",  arrow + " Manual of GDH.", totalWidthLeft);
+            PrintRightText("help ", arrow + " Manual of GDH.", totalWidthLeft);
             PrintRightText("clear ", arrow + " Clear the console.", totalWidthLeft);
             PrintRightText("exit ", arrow + " Exit the application.", totalWidthLeft);
             PrintRightText("gdf ", arrow + " Display the GDF.", totalWidthLeft);
@@ -313,6 +349,7 @@ namespace GDH.Managers
             PrintRightText("userlist ", arrow + " Get the list of all the users", totalWidthLeft);
             PrintRightText("changepw ", arrow + " Change the password of an user.", totalWidthLeft);
             PrintRightText("sudo ", arrow + " Execute an command as administrator.", totalWidthLeft);
+            PrintRightText("ping ", arrow + " Ping an server and display the result", totalWidthLeft);
         }
 
         /// <summary>
@@ -321,7 +358,7 @@ namespace GDH.Managers
         /// <param name="prefix"></param>
         /// <param name="text"></param>
         /// <param name="totalLineLength"></param>
-        static void PrintRightText(string text, string desc,  int totalWidthLeft)
+        static void PrintRightText(string text, string desc, int totalWidthLeft)
         {
             Console.WriteLine(text.PadLeft(totalWidthLeft, ' ') + desc);
         }
