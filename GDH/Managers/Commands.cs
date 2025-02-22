@@ -179,13 +179,27 @@ namespace GDH.Managers
             }
         }
 
+        /// <summary>
+        /// Check for the ping to be right structured
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        private static bool PingIsRight(string[] args)
+        {
+            return args.Count() == 0 || (args.Count() > 1 && (args.Count() != 3 || !int.TryParse(args[2], out _)));
+        }
+
+        /// <summary>
+        /// Ping an server and tell if it's on or off
+        /// </summary>
+        /// <param name="args"></param>
         public static void Ping(string[] args)
         {
             string hostname = String.Empty;
             int port = 80;
 
-            // Parameter cannot be nullp
-            if (args.Count() == 0 || (args.Count() > 1 && (args.Count() != 3 || !int.TryParse(args[2], out _))))
+            // Parameter cannot be null
+            if (PingIsRight(args))
             {
                 Displayer.DisplayError("Bad arguments, try [ changepw --help ] for more infomations.");
                 return;
