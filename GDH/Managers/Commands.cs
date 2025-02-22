@@ -21,6 +21,7 @@ namespace GDH.Managers
             { "exit", (1, args => Exit()) },
             { "gdf", (1, args => GDF()) },
             { "clear", (1, args => Console.Clear()) },
+            { "reset", (1, args => Console.Clear()) },
             { "echo", (1, args => Echo(args)) },
             { "logout", (1, args => GDH.Logout()) },
             { "userdel", (2, args => {
