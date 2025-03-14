@@ -434,9 +434,9 @@ namespace GDH.Managers
                 }
 
                 // Detect string text
-                if (options[0].StartsWith('"') && options.Last().EndsWith('"'))
+                if (option.StartsWith('"') && options.Last().EndsWith('"'))
                 {
-                    message = string.Join(" ", options);
+                    message = string.Join(" ", options[i..options.Count()]);
                     message = message.Substring(1, message.Length - 2);
                     break;
                 }
@@ -456,9 +456,6 @@ namespace GDH.Managers
                         Displayer.DisplayError("Unknown option: " + option);
                         return;
                 }
-
-                // Remove the option beacause we already checked it
-                options.RemoveAt(0);
             }
 
             if (small)
