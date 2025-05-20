@@ -26,9 +26,11 @@ namespace GDH
         public static void DisplayError(string error)
         {
             GDH.FColor(GDH.ErrColor);
-            Console.WriteLine(bigSpace + "> " + error);
-            Console.WriteLine();
+            Console.Write("Error: ");
+
             Console.ResetColor();
+
+            Console.WriteLine(error);
         }
 
         /// <summary>
