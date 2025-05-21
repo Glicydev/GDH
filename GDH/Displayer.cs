@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GDH
 {
@@ -25,9 +27,17 @@ namespace GDH
         /// <param name="error">The error message</param>
         public static void DisplayError(string error)
         {
-            GDH.FColor(GDH.ErrColor);
-            Console.WriteLine(bigSpace + "> " + error);
+            DisplayStatus("Error", GDH.ErrColor);
+
+            Console.ResetColor();
+            Console.WriteLine(error);
             Console.WriteLine();
+        }
+
+        private static void DisplayStatus(string status, ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.Write($"{bigSpace}[{status}] ");
             Console.ResetColor();
         }
 
@@ -83,10 +93,10 @@ namespace GDH
         /// <param name="message">The message</param>
         public static void displayConfirmation(string message)
         {
-            GDH.FColor(GDH.ConfirmColor);
-            Console.WriteLine(bigSpace + "> " + message);
             Console.WriteLine();
-            Console.ResetColor();
+            DisplayStatus("Success", GDH.ConfirmColor);
+            Console.WriteLine(message);
+            Console.WriteLine();
         }
 
         /// <summary>

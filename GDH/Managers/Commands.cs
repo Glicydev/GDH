@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Security;
-using System.Text;
-using System.Threading.Tasks;
-using GDH.database;
+﻿using GDH.database;
 
 namespace GDH.Managers
 {
@@ -20,8 +12,8 @@ namespace GDH.Managers
             { "?", (1, args => Help()) },
             { "exit", (1, args => Exit()) },
             { "gdf", (1, args => GDF()) },
-            { "clear", (1, args => Console.Clear()) },
-            { "reset", (1, args => Console.Clear()) },
+            { "clear", (1, args => GDH.Clear()) },
+            { "reset", (1, args => GDH.Clear()) },
             { "echo", (1, args => Echo(args)) },
             { "logout", (1, args => GDH.Logout()) },
             { "userdel", (2, args => {
@@ -32,8 +24,44 @@ namespace GDH.Managers
             { "changepw", (2, args => changePw(args))},
             { "sudo", (1, args => Sudo(args))},
             { "changeperms", (2, args => ChangePerms(args))},
-            { "ping", (2, args => Ping(args))},
+            { "ping", (1, args => Ping(args))},
+            { "symbol", (1, args => Symbol(args))},
         };
+
+        /// <summary>
+        /// Changes the terminal symbol when writing a command
+        /// </summary>
+        /// <param name="args">The command argument</param>
+        public static void Symbol(string[] args)
+        {
+            if (args.Length == 0)
+            {
+                Displayer.DisplayError("No arguments specified, try [symbol --help] for more informations");
+                return;
+            }
+            else if (args.Length > 1)
+            {
+                Displayer.DisplayError("Too many arguments specified, try [symbol --help] for more informations");
+                return;
+            }
+            else if (args[0] == "--help" && args.Length == 1)
+            {
+                Displayer.DisplayUsage("symbol [the symbol you want]", "Changes the terminal symbol when writing a command");
+                return;
+            }
+
+            // Get the symbol
+            string symbol = args[0];
+
+            if (symbol.Length > 3)
+            {
+                Displayer.DisplayError("The symbol must be at maximum 3 characters long");
+                return;
+            }
+
+            Console.Clear();
+            GDH.Symbol = symbol;
+        }
 
         /// <summary>
         /// Execute the sudo command (super user do).
@@ -351,6 +379,7 @@ namespace GDH.Managers
             PrintRightText("changepw ", arrow + " Change the password of an user.", totalWidthLeft);
             PrintRightText("sudo ", arrow + " Execute an command as administrator.", totalWidthLeft);
             PrintRightText("ping ", arrow + " Ping an server and display the result", totalWidthLeft);
+            PrintRightText("symbol ", arrow + " Changes the terminal symbol when writing a command", totalWidthLeft);
         }
 
         /// <summary>
