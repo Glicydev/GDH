@@ -59,7 +59,7 @@ namespace GDH.Managers
                 return;
             }
 
-            Console.Clear();
+            GDH.Clear();
             GDH.Symbol = symbol;
         }
 
