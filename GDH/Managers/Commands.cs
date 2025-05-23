@@ -5,6 +5,8 @@ namespace GDH.Managers
     public class Commands
     {
         private const string bigSpace = "   ";
+        private const int _totalWidthLeft = 16;
+        private const string _arrow = "->";
 
         public static Dictionary<string, (int PermissionLevel, Action<string[]>)> commands = new Dictionary<string, (int, Action<string[]>)>
         {
@@ -342,9 +344,9 @@ namespace GDH.Managers
                 "\u001b[38;5;34m  _______   \u001b[38;5;34m________    \u001b[38;5;34m__    \u001b[38;5;34m__",
                 "\u001b[38;5;35m /\" _   \"| \u001b[38;5;35m|\"       \"\\ \u001b[38;5;35m/\" |  | \"\\" + bigSpace + " Version: " + GDH.version,
                 "\u001b[38;5;36m(: ( \\___) \u001b[38;5;36m(.  ___  :)(:  (__)  :)" + bigSpace + "Uptime: " + uptime.ToString(@"hh\h\ mm\m\ ss\s"),
-                "\u001b[38;5;37m \\/ \\      \u001b[38;5;37m|: \\   ) || \u001b[38;5;37m\\/      \\/",
-                "\u001b[38;5;38m //  \\ ___ \u001b[38;5;38m(| (___\\ || \u001b[38;5;38m//  __  \\\\",
-                "\u001b[38;5;39m(:   _(  _||:       :)(:  (  )  :) ",
+                "\u001b[38;5;37m \\/ \\      \u001b[38;5;37m|: \\   ) || \u001b[38;5;37m\\/      \\/" + bigSpace + " Computer Name: " + Environment.MachineName,
+                "\u001b[38;5;38m //  \\ ___ \u001b[38;5;38m(| (___\\ || \u001b[38;5;38m//  __  \\\\" + bigSpace + " OS: " + Environment.OSVersion,
+                "\u001b[38;5;39m(:   _(  _||:       :)(:  (  )  :)"  + bigSpace + "Username: " + GDH.User.Username,
                 "\u001b[38;5;40m \\_______) \u001b[38;5;40m(________/  \\__|  |__/  \u001b[0m"
             };
 
@@ -363,23 +365,19 @@ namespace GDH.Managers
         /// </summary>
         public static void Help()
         {
-            const int totalWidthLeft = 12;
-            const string arrow = "->";
-            int consoleWidth = Console.WindowWidth;
-
             // Help displaying
             Console.WriteLine();
-            PrintRightText("help ", arrow + " Manual of GDH.", totalWidthLeft);
-            PrintRightText("clear ", arrow + " Clear the console.", totalWidthLeft);
-            PrintRightText("exit ", arrow + " Exit the application.", totalWidthLeft);
-            PrintRightText("gdf ", arrow + " Display the GDF.", totalWidthLeft);
-            PrintRightText("logout ", arrow + " Logout from the actual user.", totalWidthLeft);
-            PrintRightText("userdel ", arrow + " Delete an user.", totalWidthLeft);
-            PrintRightText("userlist ", arrow + " Get the list of all the users", totalWidthLeft);
-            PrintRightText("changepw ", arrow + " Change the password of an user.", totalWidthLeft);
-            PrintRightText("sudo ", arrow + " Execute an command as administrator.", totalWidthLeft);
-            PrintRightText("ping ", arrow + " Ping an server and display the result", totalWidthLeft);
-            PrintRightText("symbol ", arrow + " Changes the terminal symbol when writing a command", totalWidthLeft);
+            PrintRightText("help ", _arrow + " Manual of GDH.");
+            PrintRightText("clear ", _arrow + " Clear the console.");
+            PrintRightText("exit ", _arrow + " Exit the application.");
+            PrintRightText("gdf ", _arrow + " Display the GDF.");
+            PrintRightText("logout ", _arrow + " Logout from the actual user.");
+            PrintRightText("userdel ", _arrow + " Delete an user.");
+            PrintRightText("userlist ", _arrow + " Get the list of all the users");
+            PrintRightText("changepw ", _arrow + " Change the password of an user.");
+            PrintRightText("sudo ", _arrow + " Execute an command as administrator.");
+            PrintRightText("ping ", _arrow + " Ping an server and display the result");
+            PrintRightText("symbol ", _arrow + " Changes the terminal symbol when writing a command");
         }
 
         /// <summary>
@@ -388,9 +386,9 @@ namespace GDH.Managers
         /// <param name="prefix"></param>
         /// <param name="text"></param>
         /// <param name="totalLineLength"></param>
-        static void PrintRightText(string text, string desc, int totalWidthLeft)
+        static void PrintRightText(string text, string desc)
         {
-            Console.WriteLine(text.PadLeft(totalWidthLeft, ' ') + desc);
+            Console.WriteLine(text.PadLeft(_totalWidthLeft, ' ') + desc);
         }
 
         /// <summary>
