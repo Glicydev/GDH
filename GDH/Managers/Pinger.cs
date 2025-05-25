@@ -38,7 +38,7 @@ namespace GDH.Managers
                 }
                 return true;
             }
-            catch (SocketException ex)
+            catch
             {
                 return false;
             }

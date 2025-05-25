@@ -1,4 +1,6 @@
 ﻿using GDH.database;
+using System.Net.Mime;
+using System.Text;
 
 namespace GDH.Managers
 {
@@ -18,16 +20,14 @@ namespace GDH.Managers
             { "reset", (1, args => GDH.Clear()) },
             { "echo", (1, args => Echo(args)) },
             { "logout", (1, args => GDH.Logout()) },
-            { "userdel", (2, args => {
-                string username = args.ElementAtOrDefault(0) ?? string.Empty;
-                UserDel(username);
-            })},
+            { "userdel", (2, args => UserDel(args)) },
             { "userlist", (2, args => UserList()) },
             { "changepw", (2, args => changePw(args))},
             { "sudo", (1, args => Sudo(args))},
             { "changeperms", (2, args => ChangePerms(args))},
             { "ping", (1, args => Ping(args))},
             { "symbol", (1, args => Symbol(args))},
+            { "fetch", (1, args => Fetch(args))},
         };
 
         /// <summary>
@@ -109,10 +109,11 @@ namespace GDH.Managers
         /// Delete an user from the database.
         /// </summary>
         /// <param name="username">The username of the user</param>
-        public static void UserDel(string username)
+        public static void UserDel(string[] args)
         {
+            string? username = args.FirstOrDefault();
             string error = string.Empty;
-            string userPassword = SQLiteConnection.GetPasswd(username);
+            string userPassword = String.Empty;
             bool rightPassword = false;
 
             if (username == null)
@@ -133,6 +134,8 @@ namespace GDH.Managers
             }
             else
             {
+                userPassword = SQLiteConnection.GetPasswd(username);
+
                 if (GDH.getPermissions() >= 2)
                     rightPassword = true;
 
@@ -217,7 +220,7 @@ namespace GDH.Managers
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        private static Dictionary<string, object> PingCheckFinish(string[] args)
+        private static Dictionary<string, object>? PingCheckFinish(string[] args)
         {
             int port = 80;
 
@@ -495,6 +498,143 @@ namespace GDH.Managers
             }
 
             Console.WriteLine(messageStart + message);
+        }
+
+        static async void Fetch(string[] args)
+        {
+            string pageName = String.Empty;
+            string body = String.Empty;
+            HttpMethod method = HttpMethod.Get;
+
+            // Check if there is no args
+            if (args.Length == 0)
+            {
+                Displayer.DisplayError("No arguments specified, try [ fetch --help ] for more infomations.");
+                return;
+            }
+
+            if (IsHelp(args[0]))
+            {
+                Displayer.DisplayUsage("fetch [--body ...] [--method ...] <Page name>", "Fetches an page and returns the result of the fetch");
+                return;
+            }
+
+            int argsSize = args.Length;
+            pageName = args.Last();
+
+            if (args.Length > 1)
+            {
+                // Check all the args
+                int i = 0;
+
+                while (args.Length > 1)
+                {
+                    string arg = args[i];
+
+                    if (i < args.Length - 2 && args[i + 1] == null)
+                    {
+                        Displayer.DisplayError("Invalid command, [ fetch --help ] for more informations");
+                        return;
+                    }
+
+                    string val = args[i + 1];
+
+                    switch (arg)
+                    {
+                        case "--body":
+                        case "-b":
+                            body = val;
+                            break;
+                        case "--method":
+                        case "-m":
+                            method = StringToHttpMethod(val);
+                            break;
+                        default:
+                            Displayer.DisplayError($"{arg} is not an valid argument");
+                            return;
+                    }
+
+                    args = args.Skip(2).ToArray();
+                }
+
+                pageName = args.FirstOrDefault(); // The only arg left should be the URI
+            }
+
+            if (string.IsNullOrEmpty(pageName))
+            {
+                Displayer.DisplayError("The URI of the page is required");
+                return;
+            }
+            else if (!pageName.StartsWith("http://") && !pageName.StartsWith("https://"))
+            {
+                pageName = "https://" + pageName;
+            }
+
+            string result = await FetchPage(pageName, body, method);
+
+            if (result != null)
+            {
+                Console.WriteLine(result);
+            }
+        }
+
+        private async static Task<string?> FetchPage(string pageName, string body, HttpMethod method)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    var request = new HttpRequestMessage
+                    {
+                        Method = method,
+                        RequestUri = new Uri(pageName),
+                        Content = new StringContent
+                        (
+                            body,
+                            Encoding.UTF8,
+                            MediaTypeNames.Application.Json
+                        ),
+                    };
+
+                    var response = await client.SendAsync(request)
+                        .ConfigureAwait(false);
+
+                    response.EnsureSuccessStatusCode();
+
+                    return await client.GetStringAsync(pageName);
+                }
+            }
+            catch
+            {
+                Displayer.DisplayError("An error has occured.");
+                return null;
+            }
+        }
+
+        private static HttpMethod StringToHttpMethod(string? method)
+        {
+            switch (method)
+            {
+                case "get":
+                    return HttpMethod.Get;
+                case "post":
+                    return HttpMethod.Post;
+                case "delete":
+                    return HttpMethod.Delete;
+                case "put":
+                    return HttpMethod.Put;
+                case "patch":
+                    return HttpMethod.Patch;
+                case "options":
+                    return HttpMethod.Options;
+                default:
+                    return HttpMethod.Get;
+            }
+        }
+
+        private static bool IsHelp(string arg)
+        {
+            return arg != null && (arg == "--help" || arg == "-h");
         }
     }
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GDH.Managers
+﻿namespace GDH.Managers
 {
     public class Executer
     {
@@ -15,7 +9,7 @@ namespace GDH.Managers
         private static void ExecuteCommand(string command)
         {
             string[] commandWithParams = command.Split(' ');
-            string[] options = commandWithParams.Skip(1).ToArray();
+            string[] options = commandWithParams.Skip(1).ToArray() ?? [];
             command = commandWithParams[0];
 
             if (string.IsNullOrEmpty(command))
