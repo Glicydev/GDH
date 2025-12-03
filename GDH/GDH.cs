@@ -9,6 +9,9 @@ namespace GDH
         public const string name = "GDH";
         public const string version = "1.0.1";
 
+        private readonly static TelemetryCounter _loginCounter = new TelemetryCounter("GDH.LoginFailures", "1.0.0", "login-failures-counter", "Failure", "Number of login failures");
+        private readonly static TelemetryCounter _commandsCounter = new TelemetryCounter("GDH.ExecutedCommands", "1.0.0", "executed-commands-counter", "Executed", "Number of commands executed");
+
         // Defining the colors
         public static ConsoleColor StyleColor { get; } = ConsoleColor.Magenta;
         public static ConsoleColor ErrColor { get; } = ConsoleColor.Red;
@@ -42,6 +45,7 @@ namespace GDH
                 Console.Write($" {_symbol} ");
 
                 command = Console.ReadLine().ToLower();
+                _commandsCounter.Increment();
 
                 Executer.Execute(command);
                 Console.WriteLine();
@@ -77,6 +81,7 @@ namespace GDH
 
                 if (!rightPassword)
                 {
+                    _loginCounter.Increment();
                     Displayer.DisplayError("Wrong password !");
                 }
 

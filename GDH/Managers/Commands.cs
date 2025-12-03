@@ -113,7 +113,6 @@ namespace GDH.Managers
         {
             string? username = args.FirstOrDefault();
             string error = string.Empty;
-            string userPassword = String.Empty;
             bool rightPassword = false;
 
             if (username == null)
@@ -134,8 +133,6 @@ namespace GDH.Managers
             }
             else
             {
-                userPassword = SQLiteConnection.GetPasswd(username);
-
                 if (GDH.getPermissions() >= 2)
                     rightPassword = true;
 

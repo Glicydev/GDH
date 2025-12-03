@@ -1,6 +1,6 @@
 ﻿namespace GDH.Managers
 {
-    public class Executer
+    public static class Executer
     {
         /// <summary>
         /// Execute the command.
