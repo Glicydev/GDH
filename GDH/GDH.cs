@@ -5,7 +5,6 @@ namespace GDH
 {
     public class GDH
     {
-
         public const string name = "GDH";
         public const string version = "1.0.1";
 
